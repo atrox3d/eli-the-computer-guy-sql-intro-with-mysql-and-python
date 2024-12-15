@@ -21,11 +21,11 @@ def create_table_temp(db:MySQLConnection=None):
         db
     )
 
-def get_temperature(max:int|None=None) -> Generator[int, None, None]:
+def get_temperature(max_loops:int|None=None) -> Generator[int, None, None]:
     count = 0
     while True:
-        if max is not None:
-            if count >= max:
+        if max_loops is not None:
+            if count >= max_loops:
                 return
         yield randint(0, 100)
         count += 1

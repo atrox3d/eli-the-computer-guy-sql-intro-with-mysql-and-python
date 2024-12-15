@@ -3,8 +3,6 @@ from datetime import UTC
 from time import sleep
 
 from database import (
-    drop_table,
-    create_table_temp, 
     get_db, 
     exec_statement,
     MySQLConnection

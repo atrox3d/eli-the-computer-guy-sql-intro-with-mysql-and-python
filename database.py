@@ -30,7 +30,8 @@ if __name__ == "__main__":
         print('ERROR |', e)
 
 
-def create_table_temp(db:MySQLConnection):
+def create_table_temp(db:MySQLConnection=None):
+    db = db or get_db()
     cursor = db.cursor()
     cursor.execute(
         '''
@@ -44,13 +45,15 @@ def create_table_temp(db:MySQLConnection):
     db.commit()
 
 
-def drop_table(db:MySQLConnection, name:str):
+def drop_table(name:str, db:MySQLConnection=None):
+    db = db or get_db()
     cursor = db.cursor()
     cursor.execute(f'drop table if exists {name}')
     db.commit()
 
 
-def exec_statement(db:MySQLConnection, stmt:str):
+def exec_statement(stmt:str, db:MySQLConnection=None):
+    db = db or get_db()
     cursor = db.cursor()
     cursor.execute(stmt)
     # print(cursor.statement)

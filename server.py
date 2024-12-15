@@ -22,28 +22,28 @@ def get_temperature(max:int|None=None) -> Generator[int, None, None]:
         yield randint(0, 100)
         count += 1
 
-def insert_temperature(db:MySQLConnection, temp:int):
+def insert_temperature(temp:int, db:MySQLConnection=None):
     exec_statement(
-            db,
             f'''
             insert into temp
                 (temp)
             values ({temp})
-            '''
+            ''',
+            db
     )
-    db.commit()
+    # db.commit()
 
-def setup(db:MySQLConnection):
-    drop_table(db, 'temp')
+def setup(db:MySQLConnection=None):
+    drop_table('temp', db)
     create_table_temp(db)
 
 if __name__ == "__main__":
     options = parse_args()
     print(options)
 
-    setup(db)
+    setup()
 
     for t in get_temperature(options.max):
         print(t)
-        insert_temperature(db, t)
+        insert_temperature(t)
         sleep(options.interval)

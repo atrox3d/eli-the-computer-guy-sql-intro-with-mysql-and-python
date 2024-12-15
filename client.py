@@ -10,14 +10,14 @@ from database import (
 
 db = get_db()
 
-def get_last_temp(db:MySQLConnection) -> int:
+def get_last_temp(db:MySQLConnection=None) -> int:
     result = exec_statement(
-        db,
         '''
         select * from temp
         order by timestamp desc
         limit 1
-        '''
+        ''',
+        db
     )
     return result[0]
 
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # print(last_timestamp)
     last_id = 0
     while True:
-        id, temp, timestamp = get_last_temp(db)
+        id, temp, timestamp = get_last_temp()
         # if timestamp > last_timestamp:
         print(id, last_id)
         if id > last_id:

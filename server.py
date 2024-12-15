@@ -47,4 +47,3 @@ if __name__ == "__main__":
         print(t)
         insert_temperature(db, t)
         sleep(options.interval)
-

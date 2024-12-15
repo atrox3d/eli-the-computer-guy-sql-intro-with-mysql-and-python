@@ -41,11 +41,13 @@ def create_table_temp(db:MySQLConnection):
         )
         '''
     )
+    db.commit()
 
 
 def drop_table(db:MySQLConnection, name:str):
     cursor = db.cursor()
     cursor.execute(f'drop table if exists {name}')
+    db.commit()
 
 
 def exec_statement(db:MySQLConnection, stmt:str):
@@ -53,5 +55,6 @@ def exec_statement(db:MySQLConnection, stmt:str):
     cursor.execute(stmt)
     # print(cursor.statement)
     result = cursor.fetchall()
+    db.commit()
     return result
 

@@ -3,12 +3,9 @@ from datetime import UTC
 from time import sleep
 
 from database import (
-    get_db, 
     exec_statement,
     MySQLConnection
 )
-
-db = get_db()
 
 def get_last_temp(db:MySQLConnection=None) -> int:
     result = exec_statement(

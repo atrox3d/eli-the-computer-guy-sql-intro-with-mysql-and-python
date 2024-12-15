@@ -4,14 +4,22 @@ from random import randint
 
 from database import (
     drop_table,
-    create_table_temp, 
-    get_db, 
     exec_statement,
     MySQLConnection
 )
 from options import parse_args
 
-db = get_db()
+def create_table_temp(db:MySQLConnection=None):
+    exec_statement(
+        '''
+        create table if not exists temp(
+            id int auto_increment primary key,
+            temp int,
+            timestamp timestamp default now()
+        )
+        ''',
+        db
+    )
 
 def get_temperature(max:int|None=None) -> Generator[int, None, None]:
     count = 0
@@ -31,7 +39,6 @@ def insert_temperature(temp:int, db:MySQLConnection=None):
             ''',
             db
     )
-    # db.commit()
 
 def setup(db:MySQLConnection=None):
     drop_table('temp', db)

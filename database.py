@@ -9,29 +9,51 @@ config = dict(
 )
 
 def get_db(config:dict=config) -> MySQLConnection:
-    return mysql.connector.connect(**config )
+    ''' returns new connection'''
+    connection = mysql.connector.connect(**config )
+    print(f'GET_DB| {connection.connection_id = }')
+    return connection
 
 def exec_statement(stmt:str, db:MySQLConnection=None):
+    ''' 
+    gets new or exiting db connection,
+    gets new cursor,
+    executes query,
+    commits,
+    closes cursor,
+    returns result
+    '''
     db = db or get_db()
     cursor = db.cursor()
     cursor.execute(stmt)
-    # print(cursor.statement)
     result = cursor.fetchall()
     db.commit()
+    cursor.close()
     return result
 
-def test_connection(config:dict):
+def test_connection(config:dict) -> tuple:
+    ''' 
+    tests the connection
+    returns user, host, port
+    '''
     db = get_db(config)
+    assert db.is_connected()
+    
     db.close()
     print(db.is_connected())
+    assert not db.is_connected()
+
     return(
             db.user,
             db.server_host,
             db.server_port,
-        )
+    )
 
 def drop_table(name:str, db:MySQLConnection=None):
-    exec_statement(f'drop table if exists {name}', db)
+    ''' drops a table '''
+    print(f'DROP_TABLE| dropping {name}')
+    result = exec_statement(f'drop table if exists {name}', db)
+    print(f'DROP_TABLE| {result = }')
 
 if __name__ == "__main__":
     try:

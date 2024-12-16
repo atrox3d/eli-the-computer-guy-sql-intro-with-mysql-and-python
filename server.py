@@ -43,7 +43,6 @@ def insert_temperature(temp:int, db:MySQLConnection=None):
             ''',
             db
     )
-    print(f'INSERT_TEMPERATURE| {result = }')
 
 def reset_temp_table(db:MySQLConnection=None):
     ''' resets temp table '''

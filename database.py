@@ -8,9 +8,17 @@ config = dict(
     database='company'
 )
 
+__db: MySQLConnection = None
+
 def get_db(config:dict=config) -> MySQLConnection:
     ''' returns new connection'''
-    connection = mysql.connector.connect(**config )
+    global __db
+
+    if __db is None or not __db.is_connected():
+        connection = mysql.connector.connect(**config )
+        __db = connection
+    else:
+        connection = __db
     print(f'GET_DB| {connection.connection_id = }')
     return connection
 
